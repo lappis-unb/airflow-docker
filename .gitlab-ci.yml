@@ -1,5 +1,5 @@
 image:
-  name: docker
+  name: registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:gitlab-runner
 
 stages:
   - build
