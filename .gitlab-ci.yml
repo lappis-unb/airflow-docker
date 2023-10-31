@@ -1,5 +1,5 @@
-# image:
-#   name: registry.docker.planejamento.gov.br/seges-cginf/docker-images/python-3.9-slim-bullseye:kubectl
+image:
+  name: docker
 
 stages:
   - build
