@@ -1,0 +1,13 @@
+apache-airflow-providers-jdbc
+apache-airflow-providers-google
+apache-airflow-providers-odbc
+apache-airflow-providers-common-sql
+apache-airflow-providers-telegram
+pandas==2.0.3
+beautifulsoup4==4.12.2
+tqdm==4.60.0
+xlrd==1.2.0
+great-expectations==0.17.2
+ipdb==0.13.13
+pytest==7.4.0
+inflect==7.0.0

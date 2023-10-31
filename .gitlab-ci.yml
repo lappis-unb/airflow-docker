@@ -1,0 +1,30 @@
+# image:
+#   name: registry.docker.planejamento.gov.br/seges-cginf/docker-images/python-3.9-slim-bullseye:kubectl
+
+stages:
+  - build
+  - push
+  # - deploy
+
+build:
+  stage: build
+  script:
+    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - docker build --load -t $CI_REGISTRY_IMAGE .
+
+push:
+  stage: push
+  needs:
+    - build
+  script:
+    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - docker push $CI_REGISTRY_IMAGE
+
+# deploy:
+#   stage: deploy
+#   script:
+#     - export KUBECONFIG=$HOME/.kube/config
+#     - echo "$KUBECONFIG_FILE" > $KUBECONFIG
+#     - kubectl delete pods --selector=app=airflow-streamlit -n airflow
+#   needs:
+#     - build
