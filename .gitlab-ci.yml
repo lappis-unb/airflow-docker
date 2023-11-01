@@ -1,18 +1,18 @@
 stages:
-  - build
+  - build-n-push
   # - push
   # - deploy
 
-build:
-  stage: build
+build-n-push:
+  stage: build-n-push
   tags:
     - docker
   services:
     - docker:dind
   image: docker
   script:
-    # - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
     # - docker build --load -t $CI_REGISTRY_IMAGE .
+    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
 
