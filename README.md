@@ -52,11 +52,11 @@ docker-compose down
 
 ## Para atualizar o ambiente docker
 
-Caso você tenha realizado alterações no [docker-compose](docker-compose.yml) (ou em qualquer
+Caso você tenha realizado alterações no [Dockerfile](Dockerfile) (ou em qualquer
 dependência, por exemplo no [requirements.txt](requirements.txt)), será necessário reconstruir a imagem novamente executando o seguinte comando:
 
 ```shell
-docker-compose build
+docker build -t registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:latest .
 ```
 
 ---

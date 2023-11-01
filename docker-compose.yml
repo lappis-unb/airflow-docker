@@ -1,8 +1,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  build:
-    context: .
+  image: registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:latest
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
