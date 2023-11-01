@@ -1,24 +1,25 @@
-image:
-  name: registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:gitlab-runner
-
 stages:
   - build
-  - push
+  # - push
   # - deploy
 
 build:
   stage: build
+  services:
+    - docker-dind
+  image: docker
   script:
-    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-    - docker build --load -t $CI_REGISTRY_IMAGE .
+    # - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    # - docker build --load -t $CI_REGISTRY_IMAGE .
+    - docker build .
 
-push:
-  stage: push
-  needs:
-    - build
-  script:
-    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
-    - docker push $CI_REGISTRY_IMAGE
+# push:
+#   stage: push
+#   needs:
+#     - build
+#   script:
+#     # - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+#     - docker push $CI_REGISTRY_IMAGE
 
 # deploy:
 #   stage: deploy
