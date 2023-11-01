@@ -5,13 +5,16 @@ stages:
 
 build:
   stage: build
+  tags:
+    - docker
   services:
     - docker:dind
   image: docker
   script:
     # - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
     # - docker build --load -t $CI_REGISTRY_IMAGE .
-    - docker build .
+    - docker build -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
 
 # push:
 #   stage: push
