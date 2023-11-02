@@ -32,10 +32,11 @@ cd airflow-docker && \
 docker-compose up -d
 ```
 
-Acesse o Airflow UI em [http://localhost:8080](http://localhost:8080)
+#### 4.1. Acesse o Airflow UI em [http://localhost:8080](http://localhost:8080)
+    - `user`: `airflow`
+    - `password`: `airflow`
 
-* `user`: `airflow`
-* `password`: `airflow`
+#### 4.2. Acesse o Jupyter Lab em [http://localhost:8888/lab](http://localhost:8080)
 
 ## Volumes
 

@@ -80,6 +80,8 @@ services:
 
   jupyter:
     <<: *airflow-common
-    command: bash -c "jupyter lab --port=8888 --no-browser --ip=0.0.0.0 --notebook-dir=/opt/airflow --ServerApp.token=''"
+    command: bash -c "jupyter lab --port=8888 --no-browser --ip=0.0.0.0 --notebook-dir=/opt/airflow/notebooks --ServerApp.token=''"
+    volumes:
+      - ./mnt/notebooks:/opt/airflow/notebooks
     ports:
       - 8888:8888
