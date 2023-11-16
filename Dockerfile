@@ -1,4 +1,6 @@
-FROM apache/airflow:2.7.2-python3.10
+# docker build registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:latest .
+
+FROM apache/airflow:2.7.3-python3.10
 
 USER root
 RUN apt-get update \
@@ -29,6 +31,11 @@ RUN apt-get update \
   && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 USER airflow
-WORKDIR /airflow
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir --user -r requirements.txt
+WORKDIR /opt/airflow
+COPY requirements.txt .
+COPY requirements-uninstall.txt .
+
+RUN pip uninstall -y -r requirements-uninstall.txt && \
+    pip install --no-cache-dir --user -r requirements.txt
+
+RUN rm ACcompactado.zip requirements.txt requirements-uninstall.txt
