@@ -6,6 +6,7 @@ USER root
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
          build-essential \
+         libgtk2.0-dev \
          unixodbc-dev \
          libpq-dev \
          vim \
