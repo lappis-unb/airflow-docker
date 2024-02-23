@@ -45,14 +45,18 @@ Caso deseje pré-carregar as conexões e variáveis do Airflow no seu ambiente,
 sobrescreva os arquivos [airflow-connections.json](/config/airflow-connections.json)
 e [airflow-variables.json](/config/airflow-variables.json).
 
-### 1.4.1 Docker login
+### 1.4.1 Docker build
 
-Antes de qualquer operação, deve ser realizado o login no GitLab para efetuar as operações de build.
+Antes de qualquer operação, deve ser realizado o build da imagem.
 ```shell
-docker login registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-docker
+docker build -f ./Dockerfile -t registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-docker ..
 ```
-Se a URL estiver errada, abra o arquivo [.env](.env) e verifique a URL que estiver na variável *AIRFLOW_IMAGE_NAME* e tente novamente.
 
+ou execute
+
+```shell
+docker compose -f init.yml up --build
+```
 
 ### 1.5. Inicializar banco, variáveis e conexões Airflow
 
