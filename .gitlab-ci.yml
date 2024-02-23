@@ -9,6 +9,7 @@ build-n-push:
     - docker:dind
   image: docker
   script:
+    - git clone https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags
     - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
