@@ -22,6 +22,8 @@ x-airflow-common:
     - ./config/airflow_local_settings.py:/opt/airflow/config/airflow_local_settings.py
     # dags
     - ../airflow-dags/dags:/opt/airflow/dags/airflow-dags
+    # Plugins
+    - ../airflow-dags/plugins:/opt/airflow/dags/airflow-dags/plugins
     # logs
     #- ./mnt/logs:/opt/airflow/logs
   user: "${AIRFLOW_UID:-50000}:0"
