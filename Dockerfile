@@ -33,10 +33,11 @@ RUN apt-get update \
 
 USER airflow
 WORKDIR /opt/airflow
-COPY requirements.txt .
-COPY requirements-uninstall.txt .
 
-RUN pip uninstall -y -r requirements-uninstall.txt && \
-    pip install --no-cache-dir --user -r requirements.txt
+COPY ./airflow-docker/requirements-uninstall.txt .
+RUN pip uninstall -y -r requirements-uninstall.txt
+
+COPY ./airflow-dags/requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
 
 RUN rm ACcompactado.zip requirements.txt requirements-uninstall.txt
