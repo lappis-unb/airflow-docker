@@ -22,11 +22,9 @@ Para fazer contribuições leia esse documento: [fluxo de desenvolvimento da eng
 ### 1.1. Instalar Docker CE [aqui!](https://docs.docker.com/get-docker/)
 
 Obs.: É necessário que o `docker-compose` tenha versão mínima `1.29`
-No Ubuntu `20.04`, recomenda-se instalar o docker a partir do
-gerenciador de pacotes *snap*:
-
+No Ubuntu `20.04`. Abra o terminal e execute:
 ```shell
-snap install docker
+curl https://get.docker.com/ | bash
 ```
 
 ### 1.2. Clonar o repositório [airflow-docker](https://gitlab.com/lappis-unb/decidimbr/airflow-docker)
