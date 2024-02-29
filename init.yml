@@ -6,6 +6,7 @@ x-airflow-common:
   environment:
     &airflow-common-env
     AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
+    AIRFLOW__API__AUTH_BACKENDS: airflow.api.auth.backend.basic_auth
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER:-airflow}:${POSTGRES_PASSWORD:-airflow}@postgres/${POSTGRES_DB:-airflow}
   volumes:
     - ./config:/tmp/airflow
