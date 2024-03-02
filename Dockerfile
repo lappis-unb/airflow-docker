@@ -7,6 +7,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
          build-essential \
          libgtk2.0-dev \
+         libgdal-dev \
          unixodbc-dev \
          libpq-dev \
          vim \

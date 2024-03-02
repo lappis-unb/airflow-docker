@@ -5,3 +5,5 @@ trigger_Airflow_Dags_pipeline:
   stage: build-n-push
   script:
     - 'curl --fail --request POST --form token=$TRIGGER_TOKEN --form ref=development "https://gitlab.com/api/v4/projects/48841114/trigger/pipeline"'
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
