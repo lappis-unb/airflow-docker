@@ -18,7 +18,7 @@ x-airflow-common:
     AIRFLOW__EMAIL__DEFAULT_EMAIL_ON_FAILURE: 'false'
     AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: 'America/Sao_Paulo'
     AIRFLOW__WEBSERVER__INSTANCE_NAME: "Dev Env!"
-    AIRFLOW__WEBSERVER__NAVBAR_COLOR: '#82f6ce'
+    AIRFLOW__WEBSERVER__NAVBAR_COLOR: '#FFD700'
     AIRFLOW__WEBSERVER__SECRET_KEY: '42'
     PYTHONPATH: '/opt/airflow/dags/airflow-dags'
   volumes:
@@ -47,6 +47,21 @@ services:
       - ${DB_VOLUME}
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: always
+
+  postgres-dw:
+    image: ${POSTGRES_IMAGE_NAME:-postgres:15}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    volumes:
+      - ${DB_VOLUME_DW}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
       retries: 5
       start_period: 5s
