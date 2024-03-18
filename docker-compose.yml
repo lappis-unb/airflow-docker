@@ -1,7 +1,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  image: ${AIRFLOW_IMAGE_NAME:-registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-docker:latest}
+  image: ${AIRFLOW_IMAGE_NAME:-registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags:latest}
   build:
     context: ..
     dockerfile: airflow-docker/Dockerfile
