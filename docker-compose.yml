@@ -30,6 +30,8 @@ x-airflow-common:
     - ../airflow-dags/plugins:/opt/airflow/dags/airflow-dags/plugins
     # logs
     #- ./mnt/logs:/opt/airflow/logs
+    - ./mnt/dags-data:/dags-data
+
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
