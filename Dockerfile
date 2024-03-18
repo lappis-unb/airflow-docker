@@ -32,10 +32,10 @@ RUN apt-get update \
   && locale-gen en_US.UTF-8 pt_BR.UTF-8 \
   && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
-RUN mkdir /dags-data && chown airflow -R /dags-data
-
 USER airflow
-WORKDIR /opt/airflow
+WORKDIR ${AIRFLOW_HOME}
+
+RUN mkdir ${AIRFLOW_HOME}/dags-data
 
 COPY ./airflow-docker/requirements-uninstall.txt .
 RUN pip uninstall -y -r requirements-uninstall.txt
