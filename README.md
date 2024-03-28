@@ -45,7 +45,28 @@ e [airflow-variables.json](/config/airflow-variables.json).
 
 ### 1.4.1 Docker build
 
-Antes de qualquer operação, deve ser realizado o build da imagem.
+Execute o seguinte comando para iniciar o Docker Compose e executar os serviços definidos 
+no arquivo de configuração "init.yml". Se necessário, este comando também reconstruirá as 
+imagens antes de iniciar os contêineres:
+
+```shell
+docker compose -f init.yml up --build
+```
+
+Isso garante que você tenha as versões mais recentes das imagens e que os contêineres sejam inicializados com base nessas imagens atualizadas.
+
+
+Caso a imagem não esteja construída ou atualizada, você pode construí-la manualmente usando um Dockerfile.
+Execute o seguinte comando para construir a imagem Docker usando o Dockerfile localizado no diretório atual
+e atribuir um nome e uma tag específicos à imagem:
+
+```shell
+docker build -f ./Dockerfile -t registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-docker ..
+```
+
+Certifique-se de ajustar o caminho do Dockerfile e o nome/tag da imagem conforme necessário.
+
+<!-- Antes de qualquer operação, deve ser realizado o build da imagem.
 ```shell
 docker build -f ./Dockerfile -t registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-docker ..
 ```
@@ -54,7 +75,7 @@ ou execute
 
 ```shell
 docker compose -f init.yml up --build
-```
+``` -->
 
 ### 1.5. Inicializar banco, variáveis e conexões Airflow
 
