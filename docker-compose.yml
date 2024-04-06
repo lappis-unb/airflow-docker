@@ -20,6 +20,7 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__INSTANCE_NAME: "Lappis - Local Dev Env!"
     AIRFLOW__WEBSERVER__NAVBAR_COLOR: '#98DFFF'
     AIRFLOW__WEBSERVER__SECRET_KEY: '42'
+    AIRFLOW__CORE__TEST_CONNECTION: Enabled
     PYTHONPATH: '${AIRFLOW_HOME}/dags/airflow-dags'
   volumes:
     # cluster policy config
