@@ -40,32 +40,17 @@ x-airflow-common:
 
 services:
   postgres:
-    image: ${POSTGRES_IMAGE_NAME:-postgres:15}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-airflow}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-airflow}
-      POSTGRES_DB: ${POSTGRES_DB:-airflow}
+    build:
+      context: .
+      dockerfile: ./db/dockerfile
+    env_file:
+      - .env
     volumes:
       - ${DB_VOLUME}
+    ports:
+      - 25570:5432
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
-      interval: 10s
-      retries: 5
-      start_period: 5s
-    restart: always
-
-  postgres-dw:
-    image: ${POSTGRES_IMAGE_NAME:-postgres:15}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER_DW:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_DW:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB_DW:-postgres}
-    ports:
-      - 5401:5432
-    volumes:
-      - ${DB_VOLUME_DW}
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
       retries: 5
       start_period: 5s
