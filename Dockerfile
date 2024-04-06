@@ -35,7 +35,7 @@ RUN apt-get update \
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
 
-RUN mkdir ${AIRFLOW_HOME}/dags-data
+RUN mkdir -p ${AIRFLOW_HOME}/dags-data/Notifications-Configs
 
 COPY ./airflow-docker/requirements-uninstall.txt .
 RUN pip uninstall -y -r requirements-uninstall.txt
