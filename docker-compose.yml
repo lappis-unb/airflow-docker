@@ -29,6 +29,8 @@ x-airflow-common:
     - ../airflow-dags/dags:${AIRFLOW_HOME}/dags/airflow-dags
     # Plugins
     - ../airflow-dags/plugins:${AIRFLOW_HOME}/dags/airflow-dags/plugins
+    # Jupyter
+    - ../jupyter-notebooks/:/opt/airflow/notebooks
     # logs
     #- ./mnt/logs:${AIRFLOW_HOME}/logs
     # - ./mnt/dags-data:${AIRFLOW_HOME}/dags-data
@@ -107,7 +109,9 @@ services:
   jupyter:
     <<: *airflow-common
     command: bash -c "jupyter lab --port=8888 --no-browser --ip=0.0.0.0 --notebook-dir=/opt/airflow/notebooks --ServerApp.token=''"
-    volumes:
-      - ./mnt/notebooks:/opt/airflow/notebooks
+    environment:
+      <<: *airflow-common-env
+      PUID: 1001  # Replace with your UID
+      PGID: 1001  # Replace with your GID
     ports:
       - 8888:8888
