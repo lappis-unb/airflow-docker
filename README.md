@@ -37,7 +37,9 @@ git clone https://gitlab.com/lappis-unb/decidimbr/airflow-docker.git
 
 Atualizar, se desejar, variáveis de ambiente em [.env](.env).
 
-### 1.4. Conexões e Variáveis do Airflow
+<!-- ### 1.4. Pasta para persistencia
+
+É preciso c
 
 Caso deseje pré-carregar as conexões e variáveis do Airflow no seu ambiente,
 sobrescreva os arquivos [airflow-connections.json](/config/airflow-connections.json)
@@ -66,7 +68,7 @@ docker build -f ./Dockerfile -t registry.gitlab.com/lappis-unb/decidimbr/servico
 
 Certifique-se de ajustar o caminho do Dockerfile e o nome/tag da imagem conforme necessário.
 
-<!-- Antes de qualquer operação, deve ser realizado o build da imagem.
+ Antes de qualquer operação, deve ser realizado o build da imagem.
 ```shell
 docker build -f ./Dockerfile -t registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-docker ..
 ```
@@ -75,7 +77,7 @@ ou execute
 
 ```shell
 docker compose -f init.yml up --build
-``` -->
+``` 
 
 ### 1.5. Inicializar banco, variáveis e conexões Airflow
 
@@ -108,7 +110,7 @@ configuração em [.env](.env).
 
 Neste momento já é possível executar o Airflow. Porém ainda é necessário
 clonar mais outros repositórios, tanto os que contém **plugins** do
-Airflow assim como o repositório contendo as **DAGs** de fato.
+Airflow assim como o repositório contendo as **DAGs** de fato. -->
 
 ## 2. Importando DAGs
 
@@ -124,7 +126,7 @@ git clone  https://gitlab.com/lappis-unb/decidimbr/airflow-dags.git
 ### 3.1. Iniciar serviço
 
 ```shell
-# de dentro da pasta clonada `airflow2-docker`
+# de dentro da pasta clonada `airflow-docker`
 docker compose up
 ```
 
@@ -175,7 +177,7 @@ Novas bibliotecas python podem ser instaladas adicionando o nome e versão
 (obrigatório) no arquivo [requirements.txt](requirements.txt).
 
 Para aplicar as mudanças rodar o comando de atualização da imagem em
-[6.3. Atualização da imagem airflow2-docker](#63-atualização-da-imagem-airflow2-docker).
+[6.3. Atualização da imagem airflow-docker](#63-atualização-da-imagem-airflow-docker).
 
 ### 6.2. Upgrade da versão do Airflow
 
@@ -183,16 +185,23 @@ Atualização na versão do Airflow é realizada alterando a imagem de build
 em [Dockerfile](Dockerfile#L3) conforme `tags` disponíveis em [https://hub.docker.com/r/apache/airflow](https://hub.docker.com/r/apache/airflow).
 
 Para aplicar as mudanças rodar o comando de atualização da imagem em
-[6.3. Atualização da imagem airflow2-docker](#63-atualização-da-imagem-airflow2-docker).
+[6.3. Atualização da imagem airflow-docker](#63-atualização-da-imagem-airflow-docker).
 
-### 6.3. Atualização da imagem airflow2-docker
+### 6.3. Atualização da imagem airflow-docker
 
 ```shell
 # de dentro da pasta clonada `airflow-docker`
 docker build -t registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:latest .
 ```
 
-### 6.4. Atualizar banco (quando necessário)
+ou
+
+```shell
+# de dentro da pasta clonada `airflow-docker`
+docker compose up --build -d
+```
+
+<!-- ### 6.4. Atualizar banco (quando necessário)
 
 Dependendo da atualização do Airflow, será necessário atualizar os esquemas
 do banco. Para descobrir:
@@ -205,7 +214,7 @@ Se der mensagem de erro relacionada a upgrade de banco, rodar:
 
 ```shell
 docker compose -f init.yml up airflow-init
-```
+``` -->
 
 ---
 **Have fun!**
