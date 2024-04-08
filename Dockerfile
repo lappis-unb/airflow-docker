@@ -1,6 +1,6 @@
 # docker build registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:latest .
 
-FROM apache/airflow:2.7.3-python3.10
+FROM apache/airflow:slim-2.7.3-python3.10
 
 USER root
 RUN apt-get update \
