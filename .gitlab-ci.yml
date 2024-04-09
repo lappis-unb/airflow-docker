@@ -1,9 +1,46 @@
-stages:
-  - build-n-push
+# <------------- Continuous Deploy ------------->
+default:
+  tags:
+    - docker
+  services:
+    - docker:dind
+  image: docker
+  before_script:
+    - echo "---------- Install git ----------"
+    - apk update
+    - apk add git
+    - export DOCKER_TAG=docker-${CI_COMMIT_SHORT_SHA}-dags-$(git ls-remote https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags refs/heads/development | cut -c 1-7)
 
-trigger_Airflow_Dags_pipeline:
-  stage: build-n-push
-  script:
-    - 'curl --fail --request POST --form token=$TRIGGER_TOKEN --form ref=development "https://gitlab.com/api/v4/projects/48841114/trigger/pipeline"'
+build-image:
+  stage: build
+  artifacts:
+    paths:
+      - build.img
+    expire_in: 1 hour
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
+  script:
+    - echo "---------- Docker pull for cache ----------"
+    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+
+    - echo "--------- Building the image ----------"
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --target airflow-deploy-infra -t $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${DOCKER_TAG} .
+    - docker save -o build.img $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${DOCKER_TAG}
+
+
+push-image-to-registry:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "development"
+    - if: $CI_COMMIT_REF_NAME == "main"
+  dependencies:
+    - build-image
+  script:
+    - docker load -i build.img
+    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${DOCKER_TAG}
+
+    - docker tag $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:${DOCKER_TAG} $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+    - docker push $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest

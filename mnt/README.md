@@ -1,0 +1,1 @@
+Pasta dedicada para a persistencia dos dados local do Postgres e Minio.
