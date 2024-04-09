@@ -1,6 +1,6 @@
-# docker build registry.gitlab.com/lappis-unb/decidimbr/airflow-docker:latest .
+FROM apache/airflow:slim-2.7.3-python3.10 as airflow-base
 
-FROM apache/airflow:slim-2.7.3-python3.10
+ARG enviroment=development
 
 USER root
 RUN apt-get update \
@@ -34,8 +34,27 @@ RUN apt-get update \
 
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
+RUN mkdir ${AIRFLOW_HOME}/dags-data && \
+    mkdir ${AIRFLOW_HOME}/dags-data/Notifications-Configs
 
-RUN mkdir -p ${AIRFLOW_HOME}/dags-data/Notifications-Configs
+FROM airflow-base as airflow-deploy-infra
+
+RUN if [[ "$enviroment" == "development" ]] ; then \
+      git clone -b development https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags.git ; \
+    else \
+      git clone -b main https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags.git ; \
+    fi
+
+COPY requirements-uninstall.txt .
+RUN pip uninstall -y -r requirements-uninstall.txt
+
+RUN mv ./airflow-dags/requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+RUN rm -rf ./airflow-dags/ && \
+    rm ACcompactado.zip requirements.txt requirements-uninstall.txt
+
+FROM airflow-base as airflow-local
 
 COPY ./airflow-docker/requirements-uninstall.txt .
 RUN pip uninstall -y -r requirements-uninstall.txt

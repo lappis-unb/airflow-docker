@@ -4,7 +4,8 @@ x-airflow-common:
   image: ${AIRFLOW_IMAGE_NAME:-registry.gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags:latest}
   build:
     context: ..
-    dockerfile: airflow-docker/Dockerfile
+    dockerfile: airflow-docker/dockerfile
+    target: airflow-local
   environment:
     &airflow-common-env
     AIRFLOW__CORE__DEFAULT_TIMEZONE: 'America/Sao_Paulo'
