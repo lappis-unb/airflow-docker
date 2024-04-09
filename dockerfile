@@ -1,4 +1,4 @@
-FROM apache/airflow:slim-2.7.3-python3.10 as airflow-base
+FROM apache/airflow:2.7.3-python3.10 as airflow-base
 
 USER root
 RUN apt-get update \
