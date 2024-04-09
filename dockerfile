@@ -39,20 +39,12 @@ RUN mkdir ${AIRFLOW_HOME}/dags-data && \
 
 FROM airflow-base as airflow-deploy-infra
 
-RUN if [[ "$enviroment" == "development" ]] ; then \
-      git clone -b development https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags.git ; \
-    else \
-      git clone -b main https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags.git ; \
-    fi
-
 COPY requirements-uninstall.txt .
 RUN pip uninstall -y -r requirements-uninstall.txt
 
-RUN mv ./airflow-dags/requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir --user $(curl https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags/-/raw/${enviroment}/requirements.txt)
 
-RUN rm -rf ./airflow-dags/ && \
-    rm ACcompactado.zip requirements.txt requirements-uninstall.txt
+RUN rm ACcompactado.zip  requirements-uninstall.txt
 
 FROM airflow-base as airflow-local
 
