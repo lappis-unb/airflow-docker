@@ -1,9 +1,48 @@
 stages:
-  - build-n-push
+  - build
+  - deploy
 
-trigger_Airflow_Dags_pipeline:
-  stage: build-n-push
+
+# <------------- Continuous Deploy ------------->
+
+build-image:
+  stage: build
+  tags:
+    - docker
+  services:
+    - docker:dind
+  artifacts:
+    paths:
+      - build.img
+    expire_in: 1 hour
+  image: docker
+  inherit:
+    default: false
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_REF_PROTECTED == "true"
   script:
-    - 'curl --fail --request POST --form token=$TRIGGER_TOKEN --form ref=development "https://gitlab.com/api/v4/projects/48841114/trigger/pipeline"'
-  only:
-    - main
+    - echo "---------- install git ----------"
+    - apk update
+
+    - echo "--------- Building the image ----------"
+    - docker build --target airflow-deploy-infra -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker save -o build.img $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+push-image-to-registry:
+  stage: deploy
+  tags:
+    - docker
+  services:
+    - docker:dind
+  image: docker
+  inherit:
+    default: false
+  rules:
+    - if: $CI_COMMIT_BRANCH == "development"
+  dependencies:
+    - build-image
+  script:
+    - docker load -i build.img
+    - docker login $CI_REGISTRY -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
