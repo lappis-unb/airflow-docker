@@ -1,7 +1,5 @@
 FROM apache/airflow:slim-2.7.3-python3.10 as airflow-base
 
-ARG enviroment=development
-
 USER root
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -42,7 +40,7 @@ FROM airflow-base as airflow-deploy-infra
 COPY requirements-uninstall.txt .
 RUN pip uninstall -y -r requirements-uninstall.txt
 
-RUN pip install --no-cache-dir --user $(curl https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags/-/raw/${enviroment}/requirements.txt)
+RUN pip install --no-cache-dir --user $(curl https://gitlab.com/lappis-unb/decidimbr/servicos-de-dados/airflow-dags/-/raw/development/requirements.txt)
 
 RUN rm ACcompactado.zip  requirements-uninstall.txt
 
