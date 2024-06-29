@@ -1,7 +1,5 @@
 # <------------- Continuous Deploy ------------->
 default:
-  tags:
-    - docker
   services:
     - docker:dind
   image: docker
